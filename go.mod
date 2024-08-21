@@ -7,14 +7,14 @@ require (
 	github.com/holiman/uint256 v1.2.2-0.20230321075855-87b91420868c
 	go.opentelemetry.io/otel v1.23.1
 	go.opentelemetry.io/otel/trace v1.23.1
-	golang.org/x/crypto v0.16.0
+	golang.org/x/crypto v0.21.0
 )
 
 require (
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	go.opentelemetry.io/otel/metric v1.23.1 // indirect
-	golang.org/x/net v0.14.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230822172742-b8732ec3820d // indirect
 )
 
@@ -55,7 +55,7 @@ require (
 	github.com/tklauser/go-sysconf v0.3.5 // indirect
 	github.com/tklauser/numcpus v0.2.2 // indirect
 	golang.org/x/exp v0.0.0-20230206171751-46f607a40771 // indirect
-	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
