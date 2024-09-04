@@ -162,6 +162,7 @@ func parseVerifyCiphertextInput(environment EVMEnvironment, input []byte) ([32]b
 }
 
 func verifyCiphertextRun(environment EVMEnvironment, caller common.Address, addr common.Address, input []byte, readOnly bool, runSpan trace.Span) ([]byte, error) {
+	timer := time.Now()
 	logger := environment.GetLogger()
 
 	handle, ct, err := parseVerifyCiphertextInput(environment, input)
@@ -178,8 +179,9 @@ func verifyCiphertextRun(environment EVMEnvironment, caller common.Address, addr
 
 	insertCiphertextToMemory(environment, handle, ct)
 	if environment.IsCommitting() {
+		timeElapsed := time.Since(timer)
 		logger.Info("verifyCiphertext success",
-			"ctHash", ct.GetHash().Hex())
+			"ctHash", ct.GetHash().Hex(), "time taken to Verify  Cipher", timeElapsed)
 	}
 	return handle[:], nil
 }
@@ -339,6 +341,8 @@ func fhePubKeyRun(environment EVMEnvironment, caller common.Address, addr common
 }
 
 func trivialEncryptRun(environment EVMEnvironment, caller common.Address, addr common.Address, input []byte, readOnly bool, runSpan trace.Span) ([]byte, error) {
+	timer := time.Now()
+
 	input = input[:minInt(33, len(input))]
 
 	logger := environment.GetLogger()
@@ -357,9 +361,11 @@ func trivialEncryptRun(environment EVMEnvironment, caller common.Address, addr c
 	ctHash := ct.GetHash()
 	insertCiphertextToMemory(environment, ctHash, ct)
 	if environment.IsCommitting() {
+		timeElapsed := time.Since(timer)
+
 		logger.Info("trivialEncrypt success",
 			"ctHash", ctHash.Hex(),
-			"valueToEncrypt", valueToEncrypt.Uint64())
+			"valueToEncrypt", valueToEncrypt.Uint64(), "time taken to Trivial Encryption", timeElapsed)
 	}
 	return ctHash.Bytes(), nil
 }

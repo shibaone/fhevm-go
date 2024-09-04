@@ -3,6 +3,7 @@ package fhevm
 import (
 	"encoding/hex"
 	"errors"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"go.opentelemetry.io/otel/trace"
@@ -20,6 +21,7 @@ func fheAddRun(environment EVMEnvironment, caller common.Address, addr common.Ad
 	}
 
 	if !isScalar {
+		timer := time.Now()
 		lhs, rhs, _, err := load2Ciphertexts(environment, input)
 		if err != nil {
 			logger.Error("fheAdd failed to load inputs", "err", err, "input", hex.EncodeToString(input))
@@ -44,8 +46,9 @@ func fheAddRun(environment EVMEnvironment, caller common.Address, addr common.Ad
 		}
 		resultHash := result.GetHash()
 		insertCiphertextToMemory(environment, resultHash, result)
+		timeElapsed := time.Since(timer)
 
-		logger.Info("fheAdd success", "lhs", lhs.GetHash().Hex(), "rhs", rhs.GetHash().Hex(), "result", resultHash.Hex())
+		logger.Info("fheAdd success", "lhs", lhs.GetHash().Hex(), "rhs", rhs.GetHash().Hex(), "result", resultHash.Hex(), "time taken to Add", timeElapsed)
 		return resultHash[:], nil
 
 	} else {
@@ -86,6 +89,7 @@ func fheSubRun(environment EVMEnvironment, caller common.Address, addr common.Ad
 	}
 
 	if !isScalar {
+		timer := time.Now()
 		lhs, rhs, _, err := load2Ciphertexts(environment, input)
 		if err != nil {
 			logger.Error("fheSub failed to load inputs", "err", err, "input", hex.EncodeToString(input))
@@ -110,8 +114,9 @@ func fheSubRun(environment EVMEnvironment, caller common.Address, addr common.Ad
 		}
 		resultHash := result.GetHash()
 		insertCiphertextToMemory(environment, resultHash, result)
+		timeElapsed := time.Since(timer)
 
-		logger.Info("fheSub success", "lhs", lhs.GetHash().Hex(), "rhs", rhs.GetHash().Hex(), "result", resultHash.Hex())
+		logger.Info("fheSub success", "lhs", lhs.GetHash().Hex(), "rhs", rhs.GetHash().Hex(), "result", resultHash.Hex(), "time taken to Sub", timeElapsed)
 		return resultHash[:], nil
 
 	} else {

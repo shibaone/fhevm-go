@@ -237,7 +237,7 @@ func DefaultGasCosts() GasCosts {
 	}
 }
 
-var TxDataFractionalGasFactor uint64 = 4
+var TxDataFractionalGasFactor uint64 = 1
 
 func TxDataFractionalGas(originalGas uint64) (fractionalGas uint64) {
 	return originalGas / TxDataFractionalGasFactor
