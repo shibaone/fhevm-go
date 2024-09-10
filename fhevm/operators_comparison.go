@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"math/big"
 	"strings"
-	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -26,7 +25,6 @@ func fheLeRun(environment EVMEnvironment, caller common.Address, addr common.Add
 	}
 
 	if !isScalar {
-		timer := time.Now()
 		lhs, rhs, _, err := load2Ciphertexts(environment, input)
 		if err != nil {
 			logger.Error("fheLe failed to load inputs", "err", err, "input", hex.EncodeToString(input))
@@ -51,9 +49,8 @@ func fheLeRun(environment EVMEnvironment, caller common.Address, addr common.Add
 		}
 		resultHash := result.GetHash()
 		insertCiphertextToMemory(environment, resultHash, result)
-		timeElapsed := time.Since(timer)
 
-		logger.Info("fheLe success", "lhs", lhs.GetHash().Hex(), "rhs", rhs.GetHash().Hex(), "result", resultHash.Hex(), "time taken to Le", timeElapsed)
+		logger.Info("fheLe success", "lhs", lhs.GetHash().Hex(), "rhs", rhs.GetHash().Hex(), "result", resultHash.Hex())
 		return resultHash[:], nil
 
 	} else {
@@ -545,7 +542,6 @@ func fheMaxRun(environment EVMEnvironment, caller common.Address, addr common.Ad
 }
 
 func fheIfThenElseRun(environment EVMEnvironment, caller common.Address, addr common.Address, input []byte, readOnly bool, runSpan trace.Span) ([]byte, error) {
-	timer := time.Now()
 	input = input[:minInt(96, len(input))]
 
 	logger := environment.GetLogger()
@@ -574,9 +570,8 @@ func fheIfThenElseRun(environment EVMEnvironment, caller common.Address, addr co
 	}
 	resultHash := result.GetHash()
 	insertCiphertextToMemory(environment, resultHash, result)
-	timeElapsed := time.Since(timer)
 
-	logger.Info("fheIfThenElse success", "first", first.GetHash().Hex(), "second", second.GetHash().Hex(), "third", third.GetHash().Hex(), "result", resultHash.Hex(), "time taken for if-else", timeElapsed)
+	logger.Info("fheIfThenElse success", "first", first.GetHash().Hex(), "second", second.GetHash().Hex(), "third", third.GetHash().Hex(), "result", resultHash.Hex())
 	return resultHash[:], nil
 }
 
